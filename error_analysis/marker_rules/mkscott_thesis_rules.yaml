@@ -1,0 +1,356 @@
+# The 'ref' rule is what we wanna see in the hand annotation, which could have a marker
+# The 'canon' rule is what we wanna see in the 'canonical' pronunciation
+#
+#  • Word-final Devoicing (Dv):
+#       /b/ → [p], /d/ → [t], /ɡ/ → [k]
+#    With IPA: "^.*b|d|ɡ|p|t|k$"
+"(Dv)":
+  - canon: "^(?#all_ipa)+b$"
+    ref: "^(?#all_ipa)+p$"
+  - canon: "^(?#all_ipa)+d$"
+    ref: "^(?#all_ipa)+t$"
+  - canon: "^(?#all_ipa)+g$"
+    ref: "^(?#all_ipa)+k$"
+
+#  • Word-final Debuccalization (Db):
+#       /d/ → ∅ or ʔ, /t/ → ∅ or ʔ
+"(Db)":
+  - canon: "^(?#all_ipa)+(?#^nm)d$"
+    ref: "^(?#all_ipa)+(ʔ|(?#^d))$"
+  - canon: "^(?#all_ipa)+(?#^snf)t$"
+    ref: "^(?#all_ipa)+(ʔ|(?#^t))$"
+
+#  • Consonant Cluster Reduction:
+#       /nt/ → [n], /nd/ → [n], /md/ → [m], /ft/ → [f],
+#       /st/ → [s], /sp/ → [s], /sk/ → [s],
+#       /ts/ → [t]*, /ts/ → [s]*
+#       * Clusters ending in /s/ or /z/ exhibit variation in whether the first or second
+#         element is deleted
+"(CC)":
+  # Medial /nt/
+  - canon: "^(?#all_ipa)+nt(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+n(?#^t)(?#all_ipa)+$"
+
+  # Final /nt/
+  - canon: "^(?#all_ipa)+nt$"
+    ref: "^(?#all_ipa)+n$"
+
+  # Medial /nd/
+  - canon: "^(?#all_ipa)+nd(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+n(?#^d)(?#all_ipa)+$"
+
+  # Final /nd/
+  - canon: "^(?#all_ipa)+nd$"
+    ref: "^(?#all_ipa)+n$"
+
+  # Medial /md/
+  - canon: "^(?#all_ipa)+md(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+m(?#^d)(?#all_ipa)+$"
+
+  # Final /md/
+  - canon: "^(?#all_ipa)+md$"
+    ref: "^(?#all_ipa)+m$"
+
+  # Medial /ft/
+  - canon: "^(?#all_ipa)+ft(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+f(?#^t)(?#all_ipa)+$"
+
+  # Final /ft/
+  - canon: "^(?#all_ipa)+ft$"
+    ref: "^(?#all_ipa)+f$"
+
+  # Initial /st/
+  - canon: "^st(?#all_ipa)+$"
+    ref: "^s(?#^tpk)(?#all_ipa)+$"  # should be no /st,sp,sk/ in order to ignore confused stops
+
+  # Initial /sp/
+  - canon: "^sp(?#all_ipa)+$"
+    ref: "^s(?#^tpk)(?#all_ipa)+$"  # should be no /st,sp,sk/ in order to ignore confused stops
+
+  # Initial /sk/
+  - canon: "^sk(?#all_ipa)+$"
+    ref: "^s(?#^tpk)(?#all_ipa)+$"  # should be no /st,sp,sk/ in order to ignore confused stops
+
+  # Medial /st/
+  - canon: "^(?#all_ipa)+st(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+(?#^t)s(?#^tpk)(?#all_ipa)+$"  # should be no /ts,st,sp,sk/ in order to ignore confused stops
+
+  # Medial /sp/
+  - canon: "^(?#all_ipa)+sp(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+(?#^t)s(?#^tpk)(?#all_ipa)+$"  # should be no /ts,st,sp,sk/ in order to ignore confused stops
+
+  # Medial /sk/
+  - canon: "^(?#all_ipa)+sk(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+(?#^t)s(?#^tpk)(?#all_ipa)+$"  # should be no /ts,st,sp,sk/ in order to ignore confused stops
+
+  # Medial /ts/
+  - canon: "^(?#all_ipa)+ts(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+(?#^t)s(?#^tpk)(?#all_ipa)+$"  # should be no /ts,st,sp,sk/ in order to ignore confused stops
+
+  # Final /st/
+  - canon: "^(?#all_ipa)+st$"
+    ref: "^(?#all_ipa)+(?#^t)s$" # should be no /ts/ either, just in case
+
+  # Final /sp/
+  - canon: "^(?#all_ipa)+sp$"
+    ref: "^(?#all_ipa)+(?#^t)s$" # should be no /ts/ either, just in case
+
+  # Final /sk/
+  - canon: "^(?#all_ipa)+sk$"
+    ref: "^(?#all_ipa)+(?#^t)s$" # should be no /ts/ either, just in case
+
+  # Final /ts/
+  - canon: "^(?#all_ipa)+ts$"
+    ref: "^(?#all_ipa)+(?#^t)s$"
+
+#  • Th-fronting:
+#       /θ/ → [f], /ð/ → [v]
+"(TH-f)":
+  # Initial "th"
+  - canon: "^[θð](?#all_ipa)+$"
+    ref: "^[fv](?#^θð)+$"
+
+  # Medial "th"
+  - canon: "^(?#all_ipa)+[θð](?#all_ipa)+$"
+    ref: "^(?#^θð)+[fv](?#^θð)+$"
+
+  # Final "th"
+  - canon: "^(?#all_ipa)+[θð]$"
+    ref: "^(?#^θð)+[fv]$"
+
+#  • Th-stopping:
+#       /θ/ → [t], /ð/ → [d]
+"(TH-s)":
+  # Initial "th"
+  - canon: "^[θð](?#all_ipa)+$"
+    ref: "^[td](?#^θð)+$"
+
+  # Medial "th"
+  - canon: "^(?#all_ipa)+[θð](?#all_ipa)+$"
+    ref: "^(?#^θð)+[td](?#^θð)+$"
+
+  # Final "th"
+  - canon: "^(?#all_ipa)+[θð]$"
+    ref: "^(?#^θð)+[td]$"
+
+#  • Prenasal Front Merger:
+#       Before [m, n, ŋ]: /ɪ/ ↔ /ɛ/
+"(IN)":
+    # Initial /ɪm/
+  - canon: "^ɪm(?#all_ipa)+$"
+    ref: "^ɛm(?#all_ipa)+$"
+
+    # Initial /ɛm/
+  - canon: "^ɛm(?#all_ipa)+$"
+    ref: "^ɪm(?#all_ipa)+$"
+
+    # Initial /ɪn/
+  - canon: "^ɪn(?#all_ipa)+$"
+    ref: "^ɛn(?#all_ipa)+$"
+
+    # Initial /ɛn/
+  - canon: "^ɛn(?#all_ipa)+$"
+    ref: "^ɪn(?#all_ipa)+$"
+
+    # Initial /ɪŋ/
+  - canon: "^ɪŋ(?#all_ipa)+$"
+    ref: "^ɛŋ(?#all_ipa)+$"
+
+    # Initial /ɛŋ/
+  - canon: "^ɛŋ(?#all_ipa)+$"
+    ref: "^ɪŋ(?#all_ipa)+$"
+
+    # Medial /ɪm/
+  - canon: "^(?#all_ipa)+ɪm(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɛm(?#all_ipa)+$"
+
+    # Medial /ɛm/
+  - canon: "^(?#all_ipa)+ɛm(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɪm(?#all_ipa)+$"
+
+    # Medial /ɪn/
+  - canon: "^(?#all_ipa)+ɪn(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɛn(?#all_ipa)+$"
+
+    # Medial /ɛn/
+  - canon: "^(?#all_ipa)+ɛn(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɪn(?#all_ipa)+$"
+
+    # Medial /ɪŋ/
+  - canon: "^(?#all_ipa)+ɪŋ(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɛŋ(?#all_ipa)+$"
+
+    # Medial /ɛŋ/
+  - canon: "^(?#all_ipa)+ɛŋ(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɪŋ(?#all_ipa)+$"
+
+    # Final /ɪm/
+  - canon: "^(?#all_ipa)+ɪm$"
+    ref: "^(?#all_ipa)+ɛm$"
+
+    # Final /ɛm/
+  - canon: "^(?#all_ipa)+ɛm$"
+    ref: "^(?#all_ipa)+ɪm$"
+
+    # Final /ɪn/
+  - canon: "^(?#all_ipa)+ɪn$"
+    ref: "^(?#all_ipa)+ɛn$"
+
+    # Final /ɛn/
+  - canon: "^(?#all_ipa)+ɛn$"
+    ref: "^(?#all_ipa)+ɪn$"
+
+    # Final /ɪŋ/
+  - canon: "^(?#all_ipa)+ɪŋ$"
+    ref: "^(?#all_ipa)+ɛŋ$"
+
+    # Final /ɛŋ/
+  - canon: "^(?#all_ipa)+ɛŋ$"
+    ref: "^(?#all_ipa)+ɪŋ$"
+
+#  • Low Back Merger:
+#       /ɔ/ → [a] or [ɑ]
+"(AO)":
+  # Initial
+  - canon: "^ɔ(?#all_ipa)+$"
+    ref: "^[aɑ](?#^ɔ)+$"
+
+  # Medial
+  - canon: "^(?#all_ipa)+ɔ(?#all_ipa)+$"
+    ref: "^(?#^ɔ)+[aɑ](?#^ɔ)+$"
+
+  # Final
+  - canon: "^(?#all_ipa)+ɔ$"
+    ref: "^(?#^ɔ)+[aɑ]$"
+
+#  • NOT Low Back Merger:
+#       /ɔ/ → [a] or [ɑ]
+"(-AO)":
+  # Initial
+  - canon: "^ɑ(?#all_ipa)+$"
+    ref: "^ɔ(?#all_ipa)+$"
+
+  # Medial
+  - canon: "^(?#all_ipa)+ɑ(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɔ(?#all_ipa)+$"
+
+  # Final
+  - canon: "^(?#all_ipa)+ɑ$"
+    ref: "^(?#all_ipa)+ɔ$"
+
+#  • Prelateral Back Vowel Merger
+#       Before /l/: /u/ ↔ /o/, /ʊ/ ↔ /u/, /ʌ/ ↔ /o/
+"(prel-OW)":
+  # Initial /u/ ↔ /o/
+  - canon: "^ul(?#all_ipa)+$"
+    ref: "^ol(?#all_ipa)+$"
+  - canon: "^ol(?#all_ipa)+$"
+    ref: "^ul(?#all_ipa)+$"
+
+  # Initial /ʊ/ ↔ /u/
+  - canon: "^ʊl(?#all_ipa)+$"
+    ref: "^ul(?#all_ipa)+$"
+  - canon: "^ul(?#all_ipa)+$"
+    ref: "^ʊl(?#all_ipa)+$"
+
+  # Initial /ʌ/ ↔ /o/
+  - canon: "^ʌl(?#all_ipa)+$"
+    ref: "^ol(?#all_ipa)+$"
+  - canon: "^ol(?#all_ipa)+$"
+    ref: "^ʌl(?#all_ipa)+$"
+
+  # Medial /u/ ↔ /o/
+  - canon: "^(?#all_ipa)+ul(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ol(?#all_ipa)+$"
+  - canon: "^(?#all_ipa)+ol(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ul(?#all_ipa)+$"
+
+  # Medial /ʊ/ ↔ /u/
+  - canon: "^(?#all_ipa)+ʊl(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ul(?#all_ipa)+$"
+  - canon: "^(?#all_ipa)+ul(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ʊl(?#all_ipa)+$"
+
+  # Medial /ʌ/ ↔ /o/
+  - canon: "^(?#all_ipa)+ʌl(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ol(?#all_ipa)+$"
+  - canon: "^(?#all_ipa)+ol(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ʌl(?#all_ipa)+$"
+
+  # Final /u/ ↔ /o/
+  - canon: "^(?#all_ipa)+ul$"
+    ref: "^(?#all_ipa)+ol$"
+  - canon: "^(?#all_ipa)+ol$"
+    ref: "^(?#all_ipa)+ul$"
+
+  # Final /ʊ/ ↔ /u/
+  - canon: "^(?#all_ipa)+ʊl$"
+    ref: "^(?#all_ipa)+ul$"
+  - canon: "^(?#all_ipa)+ul$"
+    ref: "^(?#all_ipa)+ʊl$"
+
+  # Final /ʌ/ ↔ /o/
+  - canon: "^(?#all_ipa)+ʌl$"
+    ref: "^(?#all_ipa)+ol$"
+  - canon: "^(?#all_ipa)+ol$"
+    ref: "^(?#all_ipa)+ʌl$"
+
+#  • Prelateral Front Vowel Merger
+#       Before /l/: /ɪ/ → [iː], /eɪ/ ↔ /ɛ/
+"(prel-IY)":
+  # Initial /ɪ/ → [iː]
+  - canon: "^ɪl(?#all_ipa)+$"
+    ref: "^il(?#all_ipa)+$"
+  - canon: "il(?#all_ipa)+$"
+    ref: "^ɪl(?#all_ipa)+$"
+
+  # Initial /eɪ/ ↔ /ɛ/
+  - canon: "^eɪl(?#all_ipa)+$"
+    ref: "^ɛl(?#all_ipa)+$"
+  - canon: "^ɛl(?#all_ipa)+$"
+    ref: "^eɪl(?#all_ipa)+$"
+
+  # Medial /ɪ/ → [iː]
+  - canon: "^(?#all_ipa)+ɪl(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+il(?#all_ipa)+$"
+  - canon: "^(?#all_ipa)+il(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɪl(?#all_ipa)+$"
+
+  # Medial /eɪ/ ↔ /ɛ/
+  - canon: "^(?#all_ipa)+eɪl(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+ɛl(?#all_ipa)+$"
+  - canon: "^(?#all_ipa)+ɛl(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+eɪl(?#all_ipa)+$"
+
+  # Final /ɪ/ → [iː]
+  - canon: "^(?#all_ipa)+ɪl$"
+    ref: "^(?#all_ipa)+il$"
+  - canon: "^(?#all_ipa)+il$"
+    ref: "^(?#all_ipa)+ɪl$"
+
+  # Final /eɪ/ ↔ /ɛ/
+  - canon: "^(?#all_ipa)+eɪl$"
+    ref: "^(?#all_ipa)+ɛl$"
+  - canon: "^(?#all_ipa)+ɛl$"
+    ref: "^(?#all_ipa)+eɪl$"
+
+#  • Monophthongization of /aɪ/
+#       /aɪ/ → [aː∼äː]
+"(AY)":
+  # Initial /aɪ/ → [a]
+  - canon: "^aɪ(?#all_ipa)+"
+    ref: "^a(?#^ɑæʌɔaəɚɛɝeɪɨioʊuʉ)(?#all_ipa)+$"
+  - canon: "^a(?#^ɑæʌɔaəɚɛɝeɪɨioʊuʉ)(?#all_ipa)+$"
+    ref: "^aɪ(?#all_ipa)+$"
+
+  # Medial /aɪ/ → [a]
+  - canon: "^(?#all_ipa)+aɪ(?#all_ipa)+"
+    ref: "^(?#all_ipa)+a(?#^ɑæʌɔaəɚɛɝeɪɨioʊuʉ)(?#all_ipa)+$"
+  - canon: "^(?#all_ipa)+a(?#^ɑæʌɔaəɚɛɝeɪɨioʊuʉ)(?#all_ipa)+$"
+    ref: "^(?#all_ipa)+aɪ(?#all_ipa)+$"
+
+  # Final /aɪ/ → [a]
+  - canon: "^(?#all_ipa)+aɪ"
+    ref: "^(?#all_ipa)+a(?#^ɑæʌɔaəɚɛɝeɪɨioʊuʉ)$"
+  - canon: "^(?#all_ipa)+a(?#^ɑæʌɔaəɚɛɝeɪɨioʊuʉ)$"
+    ref: "^(?#all_ipa)+aɪ$"
